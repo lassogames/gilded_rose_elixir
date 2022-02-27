@@ -126,4 +126,21 @@ defmodule GildedRoseTest do
     end
   end
 
+  # Tests for Conjured items
+  describe "when item is 'Conjured'" do
+    test "degrade quality by 2" do
+      fixed = [%GildedRose.Item{name: "Conjured", sell_in: 9, quality: 10}]
+      expected = [%GildedRose.Item{name: "Conjured", sell_in: 8, quality: 8}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+
+    test "degrade quality by 4 if sell_in is below 0" do
+      fixed = [%GildedRose.Item{name: "Conjured", sell_in: 0, quality: 10}]
+      expected = [%GildedRose.Item{name: "Conjured", sell_in: -1, quality: 6}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+  end
+
 end
