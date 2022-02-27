@@ -1,4 +1,5 @@
 defmodule GildedRose do
+  """
   use Agent
   alias GildedRose.Item
 
@@ -19,8 +20,23 @@ defmodule GildedRose do
   end
 
   def items(agent), do: Agent.get(agent, & &1)
+  """
 
+  def update_quality(items) do
+    Enum.map(items, &update_item/1)
+  end
+
+  def update_item(item) do
+    updater = ItemUpdater.get(item.name)
+
+    item
+    |> updater.update_item
+    |> normalize_quality
+  end
+
+  """
   def update_quality(agent) do
+
     for i <- 0..(Agent.get(agent, &length/1) - 1) do
       item = Agent.get(agent, &Enum.at(&1, i))
 
@@ -134,9 +150,12 @@ defmodule GildedRose do
         end
 
       Agent.update(agent, &List.replace_at(&1, i, item))
-      IO.puts(item)
     end
 
     :ok
+  end
+  """
+
+  def do_nothing(item) do
   end
 end
