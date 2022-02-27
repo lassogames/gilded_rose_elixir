@@ -134,6 +134,7 @@ defmodule GildedRose do
         end
 
       Agent.update(agent, &List.replace_at(&1, i, item))
+      IO.puts(item)
     end
 
     :ok
