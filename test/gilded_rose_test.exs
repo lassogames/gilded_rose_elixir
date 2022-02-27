@@ -1,6 +1,7 @@
 defmodule GildedRoseTest do
   use ExUnit.Case
 
+  # Standard Item Tests
   describe "when standard item" do
     test "decrease quality and sell_in by 1" do
       fixed = [%GildedRose.Item{name: "Regular item", sell_in: 9, quality: 10}]
@@ -32,6 +33,7 @@ defmodule GildedRoseTest do
   end
 
 
+  # Sulfuras Tests
   describe "when item is 'Sulfuras'" do
     test "quality or sell_in doesn't change" do
       fixed = [%GildedRose.Item{name: "Sulfuras", sell_in: 9, quality: 10}]
@@ -47,4 +49,36 @@ defmodule GildedRoseTest do
       assert GildedRose.update_quality(fixed) == expected
     end
   end
+
+  # Tests for Aged Brie
+  describe "when item is 'Aged Brie'" do
+    test "increase quality by 1" do
+      fixed = [%GildedRose.Item{name: "Aged Brie", sell_in: 9, quality: 1}]
+      expected = [%GildedRose.Item{name: "Aged Brie", sell_in: 8, quality: 2}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+
+    test "increase quality by 2 when sell_in is less than 0" do
+      fixed = [%GildedRose.Item{name: "Aged Brie", sell_in: 0, quality: 5}]
+      expected = [%GildedRose.Item{name: "Aged Brie", sell_in: -1, quality: 7}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+
+    test "don't increase quality by 2 when sell_in is 0 if quality is 50" do
+      fixed = [%GildedRose.Item{name: "Aged Brie", sell_in: 0, quality: 49}]
+      expected = [%GildedRose.Item{name: "Aged Brie", sell_in: -1, quality: 50}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+
+    test "don't increase quality at all when sell_in is less than 0 if quality is 50" do
+      fixed = [%GildedRose.Item{name: "Aged Brie", sell_in: -1, quality: 50}]
+      expected = [%GildedRose.Item{name: "Aged Brie", sell_in: -2, quality: 50}]
+
+      assert GildedRose.update_quality(fixed) == expected
+    end
+  end
+
 end
