@@ -24,6 +24,7 @@ defmodule GildedRose do
     for i <- 0..(Agent.get(agent, &length/1) - 1) do
       item = Agent.get(agent, &Enum.at(&1, i))
 
+      # Main Conditions
       item =
         cond do
           item.name != "Aged Brie" && item.name != "Backstage passes to a TAFKAL80ETC concert" ->
@@ -82,6 +83,7 @@ defmodule GildedRose do
             end
         end
 
+      # Conditions for Sulfuras
       item =
         cond do
           item.name != "Sulfuras, Hand of Ragnaros" ->
@@ -91,6 +93,7 @@ defmodule GildedRose do
             item
         end
 
+      # Conditions for leftovers
       item =
         cond do
           item.sell_in < 0 ->
